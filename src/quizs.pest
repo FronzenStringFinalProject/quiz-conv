@@ -1,0 +1,20 @@
+WHITESPACE = _{ " " | "\t" | "\n" }
+
+num      = @{ ('1'..'9' ~ ASCII_DIGIT*) | "0" }
+add      =  { "+" }
+subtract =  { "-" }
+L1_ops   = _{ add | subtract }
+
+multiply =  { "*" | "×" }
+divide   =  { "/" | "÷" }
+L2_ops   = _{ multiply | divide }
+
+equal = _{ "=" }
+
+L2_calculate = { (num ~ (L2_ops ~ L2_calculate)?) }
+L1_calculate = { (L2_calculate ~ (L1_ops ~ L1_calculate)?) }
+
+expr = { L1_calculate ~ equal ~ num }
+
+
+stats = _{ SOI ~ (expr)*}
